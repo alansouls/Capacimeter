@@ -2,8 +2,8 @@
 ## Integrantes:
   Alan Oliveira Maia <br />
   Edilgleydson Souza  <br />
-  Pedro Ivo <br />
-  Gabriel Barros  <br />
+  Pedro Ivo Gallão Brito <br />
+  Gabriel Barros Pereira  <br />
 
 ## Descrição:
 <p>
