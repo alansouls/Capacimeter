@@ -14,8 +14,8 @@
   </p>
   <p>
   A saída do projeto consiste em mostrar em um lcd o valor de X medido com sua respectiva ordem de grandeza e unidade, indicando assim se o valor medido é de um capacitor ou de um indutor. Haverá também um botão para "esquecer" a ultima medição para que se possa realizar outra.
-  </p>
-## Description:
+  
+  ## Description:
   <p>
   The idea of the project is to develop, using a STM32F030F4P6 microcontroller, a device capable of measure capacitor's capacitance and indutor's inductance from the initial voltage measure in the capacitor and the time that the device takes to discharge, that is, having it's potential back to zero. For the inductor, the process is analogue, but instead of considering voltage, we must analyze current values wich is nothing more than a relation between voltage and a certain resistance.
   </p>
@@ -24,4 +24,4 @@
   </p>
   <p>
   The project's output consist in showing through an lcd the value of X measured along with it's order of magnitude and unit, pointing that way, if the measured value is from a capacitor or an inductor. There'll be also a push button to "forget" the last measure and then making the device ready to another one.
-  </p>
+  
