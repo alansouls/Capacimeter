@@ -25,7 +25,7 @@
   <p>
   The project's output consist in showing through an lcd the value of X measured along with it's order of magnitude and unit, pointing that way, if the measured value is from a capacitor or an inductor. There'll be also a push button to "forget" the last measure and then making the device ready to another one.
   </p>
-## Lista de Materiais
+### Lista de Materiais
 * 4x Resistores de 1M;
 * 2x Resistores de 10k;
 * 3x push buttons;
