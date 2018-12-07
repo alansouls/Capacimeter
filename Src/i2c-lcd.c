@@ -36,8 +36,8 @@ void lcd_init (void)
 {
 	lcd_send_cmd (0x02);
 	lcd_send_cmd (0x28);
-	lcd_send_cmd (0x0F);
-	lcd_send_cmd (0x80);
+	lcd_send_cmd (0x0C);
+	//lcd_send_cmd (0x80);
 }
 
 void lcd_send_string (char *str)

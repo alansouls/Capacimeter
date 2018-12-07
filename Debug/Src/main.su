@@ -1,8 +1,8 @@
 main.c:46:6:reverse	8	static
 main.c:58:5:intToStr	32	static
 main.c:78:6:ftoa	16	static
-main.c:289:6:SystemClock_Config	88	static
+main.c:358:6:SystemClock_Config	88	static
 main.c:145:5:main	64	static
-main.c:381:10:getTick	0	static
-main.c:385:6:HAL_SYSTICK_Callback	0	static
-main.c:521:6:_Error_Handler	0	static
+main.c:450:10:getTick	0	static
+main.c:454:6:HAL_SYSTICK_Callback	0	static
+main.c:590:6:_Error_Handler	0	static

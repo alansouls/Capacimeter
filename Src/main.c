@@ -146,6 +146,7 @@ int main(void)
 {
   /* USER CODE BEGIN 1 */
 	const float r = 253600.0;
+	const float r2 = 4950.0;
   /* USER CODE END 1 */
 
   /* MCU Configuration----------------------------------------------------------*/
@@ -187,13 +188,12 @@ int main(void)
 		  break;
 	  }
 	}
-	while(HAL_GPIO_ReadPin(GPIOA,GPIO_PIN_7) == 1);
-	/* Infinite loop */
-	/* USER CODE BEGIN WHILE */
+	while(HAL_GPIO_ReadPin(GPIOA,GPIO_PIN_7) == 1 || HAL_GPIO_ReadPin(GPIOA,GPIO_PIN_6) == 1);
 	int iniTime = 0;
 	int finTime = 0;
-	HAL_TIM_Base_Init(&htim1);
-	HAL_TIM_Base_Start(&htim1);
+	HAL_UART_Init(&huart1);
+	char teste[16];
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -201,7 +201,7 @@ int main(void)
   while (1)
   {
 
-  /* USER CODE END WHILE */
+
 	  if(a == 0){
 		  lcd_send_cmd(0x01);
 		  HAL_Delay(50);
@@ -224,14 +224,10 @@ int main(void)
 					  HAL_ADC_Start(&hadc);
 			  }
 			  HAL_GPIO_WritePin(GPIOA,GPIO_PIN_4,0);
-			  int k = 0;
 			  HAL_ADC_Start(&hadc);
 			  iniTime = getTick();
-			  while(HAL_ADC_GetValue(&hadc) > 913){
+			  while(HAL_ADC_GetValue(&hadc) > 914){
 				  HAL_ADC_Start(&hadc);
-				  //k = HAL_ADC_GetValue(&hadc);
-				  //i++;
-				  //HAL_ADC_Start(&hadc);
 			  }
 			  finTime = getTick();
 			  float rc = finTime - iniTime;
@@ -246,8 +242,9 @@ int main(void)
 				  C = C*1000000;
 				  i = 1;
 			  }
-
+			  char strMat[10];
 			  ftoa(C,str);
+			  ftoa(C,strMat);
 			  lcd_send_cmd(0x01);
 			  HAL_Delay(50);
 			  lcd_send_cmd(0x80);
@@ -258,6 +255,7 @@ int main(void)
 				  }
 				  str[j] = ' ';
 				  str[j+1] = 'n';
+				  str[j+2] = 'F';
 			  }
 			  else{
 				  int j = 0;
@@ -266,19 +264,91 @@ int main(void)
 				  }
 				  str[j] = ' ';
 				  str[j+1] = 'u';
+				  str[j+2] = 'F';
 			  }
 			  lcd_send_string(str);
+			  char dado[4];
+			  while(1){
+				  HAL_UART_Receive(&huart1,(uint8_t *) dado,4,100);
+				  while(dado[0] != 'b');
+				  HAL_UART_Transmit(&huart1,(uint8_t *) strMat,10,100);
+				  HAL_UART_Transmit(&huart1,(uint8_t *) '\n',1,100);
+				  HAL_UART_Transmit(&huart1,(uint8_t *) i,1,100);
+			  }
 			  while(1){
 						if(HAL_GPIO_ReadPin(GPIOA,GPIO_PIN_7) == 1){
 								  break;
 						 }
 			  }
+			  while(HAL_GPIO_ReadPin(GPIOA,GPIO_PIN_7) == 1);
 
+	  	  }else {
+	  		lcd_send_cmd(0x01);
+			  HAL_Delay(50);
+			  lcd_send_cmd(0x80);
+			  lcd_send_string("Insira o ind...");
+			  while(1){
+				  if(HAL_GPIO_ReadPin(GPIOA,GPIO_PIN_6) == 1){
+						  break;
+					}
+			  }
+			  while(HAL_GPIO_ReadPin(GPIOA,GPIO_PIN_6) == 1);
+				  lcd_send_cmd(0x01);
+				  HAL_Delay(50);
+				  lcd_send_cmd(0x80);
+				  lcd_send_string("Medindo L...");
+				  HAL_GPIO_WritePin(GPIOA,GPIO_PIN_4,1);
+				  HAL_ADC_Start(&hadc);
+				  iniTime = getTick();
+				  while(HAL_ADC_GetValue(&hadc) > 1507){
+					  HAL_ADC_Start(&hadc);
+				  }
+				  finTime = getTick();
+				  float LdivR = finTime - iniTime;
+				  float l = 0;
+				  l = LdivR*r2;
+				  char str[10];
+				  lcd_send_cmd(0x01);
+				  HAL_Delay(50);
+				  lcd_send_cmd(0x80);
+				  int i = 0;
+				  if(l >= 0.001){
+					  l*= 1000;
+					  i = 0 ;
+				  }else if (l < 0.001){
+					  l*= 1000000;
+				  }
+				  ftoa(l,str);
+				  if (i == 0){
+					  int j = 0;
+					  while(str[j] != '\0'){
+						  j++;
+					  }
+					  str[j] = ' ';
+					  str[j+1] = 'm';
+					  str[j+2] = 'H';
+				  }
+				  else{
+					  int j = 0;
+					  while(str[j] != '\0'){
+						  j++;
+					  }
+					  str[j] = ' ';
+					  str[j+1] = 'u';
+					  str[j+2] = 'H';
+				  }
+				  lcd_send_string(str);
+				  while(1){
+							if(HAL_GPIO_ReadPin(GPIOA,GPIO_PIN_6) == 1){
+									  break;
+							 }
+				  }
+				  while(HAL_GPIO_ReadPin(GPIOA,GPIO_PIN_6) == 1);
 	  	  }
-  /* USER CODE BEGIN 3 */
 
   }
-  /* USER CODE END 3 */
+  /* USER CODE END WHILE */
+
 
 }
 
@@ -459,7 +529,7 @@ static void MX_USART1_UART_Init(void)
 {
 
   huart1.Instance = USART1;
-  huart1.Init.BaudRate = 38400;
+  huart1.Init.BaudRate = 9600;
   huart1.Init.WordLength = UART_WORDLENGTH_8B;
   huart1.Init.StopBits = UART_STOPBITS_1;
   huart1.Init.Parity = UART_PARITY_NONE;
