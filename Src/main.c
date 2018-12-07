@@ -318,7 +318,9 @@ int main(void)
 				  }else if (l < 0.001){
 					  l*= 1000000;
 				  }
+				  char strMat[10];
 				  ftoa(l,str);
+				  ftoa(l,strMat);
 				  if (i == 0){
 					  int j = 0;
 					  while(str[j] != '\0'){
@@ -338,6 +340,14 @@ int main(void)
 					  str[j+2] = 'H';
 				  }
 				  lcd_send_string(str);
+				  char dado[4];
+				  while(1){
+					  HAL_UART_Receive(&huart1,(uint8_t *) dado,4,100);
+					  while(dado[0] != 'b');
+					  HAL_UART_Transmit(&huart1,(uint8_t *) strMat,10,100);
+					  HAL_UART_Transmit(&huart1,(uint8_t *) '\n',1,100);
+					  HAL_UART_Transmit(&huart1,(uint8_t *) i,1,100);
+				  }
 				  while(1){
 							if(HAL_GPIO_ReadPin(GPIOA,GPIO_PIN_6) == 1){
 									  break;
