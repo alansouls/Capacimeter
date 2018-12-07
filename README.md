@@ -24,4 +24,43 @@
   </p>
   <p>
   The project's output consist in showing through an lcd the value of X measured along with it's order of magnitude and unit, pointing that way, if the measured value is from a capacitor or an inductor. There'll be also a push button to "forget" the last measure and then making the device ready to another one.
+ 
+### Lista de Materiais:
+* 4x Resistores de 1M;
+* 2x Resistores de 10k;
+* 3x push buttons;
+* 1x Microcontrolador Stm32F030F4P6;
+* 1x Display LCD 16x02;
+* 1x Módulo I2C para display LCD 16x02;
+* 1x Módulo bluetooth HC-05;
+* Diversos Jumpers para conexões.
+
+## Configuração: 
+<p>
+    O microcontrolador foi configurado no Cube com um pino de ADC, dois para UART(Tx e Rx), 1 GPIO_OUTPUT (Para controlar a fonte de tensão que alimenta o circuito RC e RL), e 2 pinos de input com pull-down, que serão os botões para controlar o dispositivo, um para capacitor e um para indutor.  Além desses, requer também 2 pinos de I2C(SDA e SCL) para realizar a conexão do microcontrolador e o módulo i2c, para assim fazer o controle do LCD.
+  </p>
+  <p>
+  No circuito RC, usa-se 4 resistores em paralelo de 1 Mega Ohm nominais, que resultam em uma resistência equivalente de aproximadamente 253600 Ohms. Esse valor foi escolhido para que fosse obtido uma constante de tempo RC suficientemente grande, de modo que o microcontrolador fosse capaz de contar o tempo passado de forma útil. Já para o circuito RL, usamos uma resistência bem menor, 2 resistores em paralelo de 10K, assim obtém-se na prática uma resistência de 4950 Ohms, o ideal para uma constante de tempo L/R que não seja tão pequena, sendo assim possível que microcontrolador seja capaz de medir.
+  
+  
+  ## Comunicação com MATLAB:
+  <p>
+    Para realizar a comunicação entre o microcontrolador e o MATLAB é necessário conectar o hc-05 no computador via bluetooth, dessa forma os dados podem ser recebidos e transferidos para o hc-05 pela porta serial do computador. Assim, podemos usar a classe Serial do MATLAB para enviar ao bluetooth e receber do bluetooth. Porém, não é tão trivial realizar essas operações, visto que precisa-se definir o bit de término da tranmissão e controlar o quanto é transmitido pelo stm32 e recebido pelo MATLAB de maneira funcional.
+  </p>
+  <p>
+  Para resolver o problema citado anterior, vamos, após realizar a medição, manter o programa parado esperando um byte para iniciar a transmissão, assim o microcontrolador envia, via UART, o valor de C ou de L e sua ordem de grandeza, micro ou nano para capacitores e mili ou micro para indutores.
+  </p>
+  <p>
+  Após obter o valor do dispositivo medido, o código do MATLAB irá gerar um gráfico indicando o processo de descarga do Capacitor ou Indutor, mostrando assim o ponto em que o microcontrolador para a contagem do tempo para realizar, o calculo da capacitância ou da indutância. Esse processo é realizado para tentar representar visualmente o funcionamento do Capacimeter.
+  
+  
+  ## Limitações:
+  <p>
+    As limitações conhecidas do projeto se resumem a um bug no driver do LCD que diminui a visibilidade do display e limitação na medição de certos valores de C, visto que se forem muito altos a medição demora bastante tempo, e se forem muito baixos, a medição é imprecisa porque o tempo é na ordem de microssegundos e o stm32 do jeito que está o código só lê na ordem de milissegundos.
+  
+  ## Uso de Código de Terceiros:
+  <p>
+  Para esse projeto, foi utilizado o driver para LCD usando I2C para stm32 do Site ControllersTech.com, abaixo, segue o link da configuração que o site forneceu:
+  https://controllerstech.blogspot.com/2017/07/i2c-lcd-in-stm32.html
+  
   
