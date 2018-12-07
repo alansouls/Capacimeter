@@ -1,7 +1,7 @@
 [PreviousGenFiles]
-HeaderPath=C:/Users/maiaa/OneDrive/Minhas Musicas/ProjetoMicro1.0.0.2/Inc
+HeaderPath=C:/Users/maiaa/Documents/ProjetoMicro1.0.0.2/Inc
 HeaderFiles=stm32f0xx_it.h;stm32f0xx_hal_conf.h;main.h;
-SourcePath=C:/Users/maiaa/OneDrive/Minhas Musicas/ProjetoMicro1.0.0.2/Src
+SourcePath=C:/Users/maiaa/Documents/ProjetoMicro1.0.0.2/Src
 SourceFiles=stm32f0xx_it.c;stm32f0xx_hal_msp.c;main.c;
 
 [PreviousLibFiles]
